@@ -1,0 +1,38 @@
+name: Sync Google Drive to GitHub
+
+on:
+  workflow_dispatch: # Umožní spustit ručně tlačítkem
+  schedule:
+    - cron: '0 2 * * *' # Spustí se každý den ve 2:00 ráno
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Aby mohl robot uložit stažené soubory do repozitáře
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install google-api-python-client google-auth
+
+      - name: Run Sync Script
+        env:
+          GDRIVE_API_KEY: ${{ secrets.GDRIVE_API_KEY }}
+        run: python sync_script.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name 'Martin-AI-Nexus'
+          git config --global user.email 'ai-nexus@users.noreply.github.com'
+          git add drive_data/
+          # Commitne jen pokud jsou změny
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync from Google Drive" && git push)
