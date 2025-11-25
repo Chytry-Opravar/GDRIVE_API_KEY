@@ -50,8 +50,15 @@ def download_files():
             file_id = file['id']
             file_name = file['name']
 
-            if file['mimeType'] == 'application/vnd.google-apps.folder':
-                continue
+            if file['mimeType'] == 'application/vnd.google-apps.document':
+    print(f" -- Exportuji Google Doc jako DOCX: {file_name}")
+    request = service.files().export_media(fileId=file_id, mimeType='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    fh = io.FileIO(os.path.join(folder_dir, file_name + '.docx'), 'wb')
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while not done:
+        status, done = downloader.next_chunk()
+    continue
 
             print(f"Stahuji: {file_name}...")
             if 'google-apps' in file['mimeType']:
@@ -59,7 +66,7 @@ def download_files():
                 continue
 
             request = service.files().get_media(fileId=file_id)
-            fh = io.FileIO(os.path.join(folder_dir, file_name), 'wb')
+fh = io.FileIO(os.path.join(folder_dir, file_name), 'wb')
             downloader = MediaIoBaseDownload(fh, request)
             done = False
             while not done:
