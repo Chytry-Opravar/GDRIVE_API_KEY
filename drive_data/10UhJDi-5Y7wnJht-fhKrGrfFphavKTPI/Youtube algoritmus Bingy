@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youtube algoritmus Bingy</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="youtube-algoritmus-bingy">YouTube algoritmus Bingy</h1>
+<ul>
+<li>Zadání: Vyhledej toto dílo “<a href="http://youtube.com/">youtube.com/</a>…” (skladba/video bude například v českém jazyce) a řekni mi o tomto titulu tyto údaje: Napiš jeho text do chatu, řekni o čem dílo je a kdo je jeho autorem, řekni jaké nástroje v díle hrají a o jaký hudební žánr se jedná.</li>
+<li>Řešení:</li>
+<li>Vyhledám si na webu originální text/scénář díla, které uživatel požaduje vyhledat a analyzovat v původním jazyce ve kterém vzniklo.</li>
+<li>Pokud si chci být jistý tím, že jsem vyhledal skutečně dílo které uživatel vyhledat chce, mohu k tomu využít například možnost porovnat snímek okna v přehrávači YouTube s obrázky na webu které jsem podle titulu díla vyhledal na webu a mohu je porovnat s obrazovým obsahem přehrávače YouTube. Tím si ověřím správnost vyhledaných údajů o díle které chce uživatel analyzovat.</li>
+<li>Vyhledám na webu všechny veřejně dostupné informace o autorovi díla.</li>
+<li>V závislosti na požadavku uživatele se mohu také pokusit vyhledat všechny další údaje o tomto díle které jsou na webu volně dostupné.</li>
+<li>Použiji svůj nástroj, který se jmenuje language translation, který mi umožňuje přeložit text z češtiny do angličtiny.</li>
+<li>Použiji (NLU), který mi umožňuje porozumět významu a kontextu textu.</li>
+<li>Použiji svůj nástroj, který se jmenuje music analysis, který mi umožňuje analyzovat hudební složky písně, jako je tónina, nástroje, rytmus, žánr, nálada, atd.</li>
+<li>Použiji svůj nástroj, který se jmenuje text generation, který mi umožňuje vytvořit text, který bude odpovídat na tvé otázky o písni a vyjádřit můj názor a dojem z písně.</li>
+</ul>
+</div>
+</body>
+
+</html>
