@@ -27,47 +27,44 @@ def authenticate():
     return creds
 
 def download_files():
-    """Stáhne soubory z Google Drive složky."""
+    """Stáhne soubory z více Google Drive složek."""
     creds = authenticate()
     service = build('drive', 'v3', credentials=creds)
 
-    # 1. Zjistit seznam souborů ve složce
-    results = service.files().list(
-        q=f"'{FOLDER_ID}' in parents and trashed=false",
-        fields="files(id, name, mimeType)").execute()
-    files = results.get('files', [])
+    for folder_id in FOLDER_IDS:
+        print(f"📁 Synchronizuji složku: {folder_id}")
+        results = service.files().list(
+            q=f"'{folder_id}' in parents and trashed=false",
+            fields="files(id, name, mimeType)").execute()
+        files = results.get('files', [])
 
-    if not files:
-        print("Složka je prázdná nebo robot nemá přístup.")
-        return
-
-    if not os.path.exists(LOCAL_DIR):
-        os.makedirs(LOCAL_DIR)
-
-    # 2. Stahování
-    for file in files:
-        file_id = file['id']
-        file_name = file['name']
-        
-        # Přeskočit složky (pro zjednodušení stahujeme jen soubory)
-        if file['mimeType'] == 'application/vnd.google-apps.folder':
+        if not files:
+            print(" -- Složka je prázdná nebo robot nemá přístup.")
             continue
 
-        print(f"Stahuji: {file_name}...")
-        
-        # Ignorovat Google Docs formáty (nejdou stáhnout přímo, musely by se konvertovat do PDF)
-        # Zde stahujeme PDF, obrázky, Word atd.
-        if 'google-apps' in file['mimeType']:
-            print(f" -- Přeskakuji Google Doc formát: {file_name}")
-            continue
+        folder_dir = os.path.join(LOCAL_DIR, folder_id)
+        if not os.path.exists(folder_dir):
+            os.makedirs(folder_dir)
 
-        request = service.files().get_media(fileId=file_id)
-        fh = io.FileIO(os.path.join(LOCAL_DIR, file_name), 'wb')
-        downloader = MediaIoBaseDownload(fh, request)
-        done = False
-        while done is False:
-            status, done = downloader.next_chunk()
-        print(f" -- Hotovo.")
+        for file in files:
+            file_id = file['id']
+            file_name = file['name']
+
+            if file['mimeType'] == 'application/vnd.google-apps.folder':
+                continue
+
+            print(f"Stahuji: {file_name}...")
+            if 'google-apps' in file['mimeType']:
+                print(f" -- Přeskakuji Google Doc formát: {file_name}")
+                continue
+
+            request = service.files().get_media(fileId=file_id)
+            fh = io.FileIO(os.path.join(folder_dir, file_name), 'wb')
+            downloader = MediaIoBaseDownload(fh, request)
+            done = False
+            while not done:
+                status, done = downloader.next_chunk()
+            print(f" -- Hotovo.")
 
 if __name__ == '__main__':
     download_files()
