@@ -7,7 +7,11 @@ import io
 
 # KONFIGURACE
 # ID složky "Šikana MB" (z tvého odkazu)
-FOLDER_ID = '16_UWxlLa4GU4yJUbhbs6rh1qz9Du49HP' 
+FOLDER_IDS = [
+    '10UhJDi-5Y7wnJht-fhKrGrfFphavKTPI',
+    '1MqG4fQOzOGM7tt-EcZx9pQczPzHq0jx9',
+    '1w-FyAt5RGM5d2z_g9hkZEetzW1_gNZKN'
+]
 SCOPES = ['https://www.googleapis.com/auth/drive']
 LOCAL_DIR = 'drive_data'  # Kam to uložit na GitHubu
 
